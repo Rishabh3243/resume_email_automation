@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkpointModal = document.getElementById('checkpoint-modal');
     const modalCloseX = document.getElementById('modal-close-x');
     const modalCloseBtn = document.getElementById('modal-close-btn');
-    const modalHistoryBtn = document.getElementById('modal-history-btn');
     const modalResultBanner = document.getElementById('modal-result-banner');
 
     // Helper: Escape HTML
@@ -517,7 +516,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } finally {
             if (modalCloseBtn) modalCloseBtn.classList.remove('hidden');
             if (modalCloseX) modalCloseX.style.display = 'block';
-            if (modalHistoryBtn) modalHistoryBtn.classList.remove('hidden');
         }
     }
 

@@ -1,69 +1,12 @@
 import json
 import os
-from datetime import datetime, timezone
 from pathlib import Path
 from django.shortcuts import render, redirect
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.conf import settings
 from .forms import ComposeEmailForm
 from .email_service import EmailService
-
-# Data storage directory for zero-migration history persistence
-DATA_DIR = Path(settings.BASE_DIR) / 'data'
-HISTORY_FILE = DATA_DIR / 'sent_history.json'
-
-def get_all_logs():
-    """Reads sent history from JSON file."""
-    if not HISTORY_FILE.exists():
-        return []
-    try:
-        with open(HISTORY_FILE, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except Exception:
-        return []
-
-def save_log(entry):
-    """Appends an email dispatch record to JSON file."""
-    try:
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        logs = get_all_logs()
-        entry['id'] = len(logs) + 1
-        entry['sent_at_formatted'] = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')
-        logs.insert(0, entry)
-        with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-            json.dump(logs, f, indent=2, ensure_ascii=False)
-        return entry['id']
-    except Exception as e:
-        print(f"Error saving history log: {e}")
-        return None
-
-def delete_log(log_id):
-    """Deletes a single log entry by its id from JSON file."""
-    try:
-        logs = get_all_logs()
-        orig_count = len(logs)
-        filtered = [log for log in logs if int(log.get('id', 0)) != int(log_id)]
-        if len(filtered) < orig_count:
-            DATA_DIR.mkdir(parents=True, exist_ok=True)
-            with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-                json.dump(filtered, f, indent=2, ensure_ascii=False)
-            return True
-        return False
-    except Exception as e:
-        print(f"Error deleting history log {log_id}: {e}")
-        return False
-
-def clear_all_logs():
-    """Deletes all history records from JSON file."""
-    try:
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        with open(HISTORY_FILE, 'w', encoding='utf-8') as f:
-            json.dump([], f, indent=2, ensure_ascii=False)
-        return True
-    except Exception as e:
-        print(f"Error clearing history logs: {e}")
-        return False
 
 
 def setup_credentials(request):
@@ -147,12 +90,9 @@ def index(request):
         'delay_seconds': settings.DELAY_BETWEEN_EMAILS,
     }
 
-    recent_logs = get_all_logs()[:5]
-
     context = {
         'form': form,
         'env_status': env_status,
-        'recent_logs': recent_logs,
         'default_job_role': initial_job_role,
     }
     return render(request, 'mailer/index.html', context)
@@ -250,97 +190,8 @@ def send_email_api(request):
         gmail_password=gmail_password,
     )
 
-    # Save to file-based JSON history (No database/migrations required)
-    status_code = 'SUCCESS' if result['success'] else ('VALIDATION_ERROR' if len(result['checkpoints']) == 1 else 'FAILED')
-    resume_path_str = result.get('resume_path', str(EmailService.resolve_resume_path()))
-    
-    log_id = save_log({
-        'recruiter_email': recruiter_email,
-        'job_role': job_role,
-        'company_name': company_name or None,
-        'subject': subject or EmailService.get_default_subject(job_role),
-        'body_html': body_html or result.get('body_html', ''),
-        'status': status_code,
-        'resume_attached': result['success'],
-        'resume_path': resume_path_str,
-        'error_message': result.get('error'),
-        'checkpoints_log': result.get('checkpoints', [])
-    })
-
     return JsonResponse({
         'success': result['success'],
         'checkpoints': result['checkpoints'],
         'error': result.get('error'),
-        'log_id': log_id,
-    })
-
-
-def history_view(request):
-    """
-    Displays audit history of all dispatched emails loaded directly from JSON storage.
-    """
-    sender_email = request.session.get('sender_email')
-    gmail_app_password = request.session.get('gmail_app_password')
-
-    if not sender_email or not gmail_app_password:
-        return redirect('mailer:setup_credentials')
-
-    logs = get_all_logs()
-    return render(request, 'mailer/history.html', {'logs': logs})
-
-
-@require_http_methods(["POST", "DELETE"])
-def delete_log_api(request, log_id):
-    """
-    Deletes an individual history record from the JSON database.
-    """
-    success = delete_log(log_id)
-    if success:
-        return JsonResponse({
-            'success': True,
-            'message': f"Record #{log_id} has been permanently deleted."
-        })
-    return JsonResponse({
-        'success': False,
-        'error': f"Record #{log_id} not found or could not be deleted."
-    }, status=404)
-
-
-@require_http_methods(["POST"])
-def clear_history_api(request):
-    """
-    Clears all dispatch records from the database history file.
-    """
-    success = clear_all_logs()
-    if success:
-        return JsonResponse({
-            'success': True,
-            'message': "Entire database history has been deleted."
-        })
-    return JsonResponse({
-        'success': False,
-        'error': "Failed to delete database history."
-    }, status=500)
-
-
-def log_detail_api(request, log_id):
-    """
-    Returns full details and checkpoints of a past email log.
-    """
-    logs = get_all_logs()
-    target = next((log for log in logs if log.get('id') == log_id), None)
-    if not target:
-        raise Http404("Log entry not found")
-
-    return JsonResponse({
-        'id': target.get('id'),
-        'recruiter_email': target.get('recruiter_email'),
-        'job_role': target.get('job_role'),
-        'company_name': target.get('company_name'),
-        'subject': target.get('subject'),
-        'body_html': target.get('body_html'),
-        'status': target.get('status'),
-        'sent_at': target.get('sent_at_formatted', 'Recent'),
-        'error_message': target.get('error_message'),
-        'checkpoints_log': target.get('checkpoints_log', []),
     })

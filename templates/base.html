@@ -58,9 +58,6 @@
                         <a href="{% url 'mailer:index' %}" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition flex items-center gap-2">
                             <i class="fa-solid fa-pen-to-square"></i> Compose &amp; Preview
                         </a>
-                        <a href="{% url 'mailer:history' %}" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition flex items-center gap-2">
-                            <i class="fa-solid fa-clock-rotate-left"></i> Sent History
-                        </a>
                         <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200" title="Active Session Email">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                             <span class="font-mono">{{ request.session.sender_email }}</span>

@@ -10,7 +10,6 @@ A full-stack, lightweight Django web application implementing the MVC architectu
 ## Key Features
 
 1. **Lightweight Django MVC Architecture**:
-   - **Model / State**: Sent application history is stored in a clean local JSON file (`data/sent_history.json`), avoiding complex SQL migrations while still providing full audit history.
    - **View / Controller (`mailer/views.py` & `mailer/email_service.py`)**: Handles template switching, validation using `email-validator`, MIME assembly with resume attachments, Gmail SMTP connection, and real-time checkpoint responses.
    - **Templates (`templates/`)**: Built with responsive Tailwind CSS styling, dual-pane composer & live email preview, and interactive progress dialogs.
 
@@ -44,7 +43,6 @@ A full-stack, lightweight Django web application implementing the MVC architectu
      3. HTML Content Compilation
      4. Gmail SMTP Authentication
      5. Transmission & Resume Delivery
-     6. Audit Logging
 
 ---
 
@@ -60,8 +58,6 @@ resume_email_automation/
 ├── README.md                  # Documentation
 ├── ASSETS/
 │   └── resume.pdf             # Resume PDF attachment
-├── data/
-│   └── sent_history.json      # File-based audit log (zero migration)
 ├── resume_mailer/             # Django project settings
 │   ├── __init__.py
 │   ├── settings.py            # Reads .env, static & email settings (No DB needed)
@@ -82,8 +78,7 @@ resume_email_automation/
 └── templates/
     ├── base.html              # Base layout
     ├── mailer/
-    │   ├── index.html         # Main compose & checkpoint interface
-    │   └── history.html       # Email log audit dashboard
+    │   └── index.html         # Main compose & checkpoint interface
     └── emails/
         ├── with_company.html   # Template A (With Company)
         └── without_company.html# Template B (Without Company)
