@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}Start Session – JobApp Dispatcher{% endblock %}
+
+{% block content %}
+<div class="max-w-xl mx-auto py-6 sm:py-10">
+
+    <!-- Card Container -->
+    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+        
+        <!-- Header Banner -->
+        <div class="p-6 sm:p-8 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white text-center relative">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white text-2xl shadow-inner mb-4">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">JobApp Dispatcher</h1>
+            <p class="text-blue-100 text-sm mt-1.5 font-medium">Session Credentials Setup</p>
+        </div>
+
+        <div class="p-6 sm:p-8 space-y-6">
+
+
+
+            <!-- Error Banner -->
+            {% if error %}
+            <div class="rounded-xl p-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start gap-3 animate-fadeIn">
+                <i class="fa-solid fa-circle-exclamation text-rose-600 text-lg mt-0.5 shrink-0"></i>
+                <div>
+                    <strong class="font-semibold text-rose-950 block">Configuration Notice</strong>
+                    <p class="text-rose-700 mt-0.5">{{ error }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Credentials Form -->
+            <form method="POST" action="{% url 'mailer:setup_credentials' %}" class="space-y-5" id="credentials-form">
+                {% csrf_token %}
+
+                <!-- Sender Email Field -->
+                <div>
+                    <label for="sender_email" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
+                        Sender Gmail Address <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <input type="email" id="sender_email" name="sender_email" required
+                               value="{{ current_email }}"
+                               placeholder="e.g. yourname@gmail.com"
+                               class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-sans shadow-sm">
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        The Google account from which candidate applications and resumes will be dispatched.
+                    </p>
+                </div>
+
+                <!-- Gmail App Password Field -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="gmail_app_password" class="text-xs font-semibold uppercase tracking-wider text-slate-700">
+                            Gmail App Password <span class="text-rose-500">*</span>
+                        </label>
+                        <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer" class="text-[11px] text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 font-medium">
+                            <span>How to generate</span> <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <input type="password" id="gmail_app_password" name="gmail_app_password" required
+                               placeholder="16-character App Password (e.g. abcd efgh ijkl mnop)"
+                               class="w-full pl-10 pr-12 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-mono shadow-sm">
+                        <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition" title="Show or hide password">
+                            <i class="fa-solid fa-eye" id="toggle-icon"></i>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        Generate via Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App passwords. Spaces are stripped automatically.
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-2">
+                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Start Application Session</span>
+                    </button>
+                </div>
+
+            </form>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Password toggle
+    const toggleBtn = document.getElementById('toggle-password');
+    const pwdInput = document.getElementById('gmail_app_password');
+    const toggleIcon = document.getElementById('toggle-icon');
+
+    if (toggleBtn && pwdInput && toggleIcon) {
+        toggleBtn.addEventListener('click', () => {
+            const isPassword = pwdInput.type === 'password';
+            pwdInput.type = isPassword ? 'text' : 'password';
+            toggleIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+        });
+    }
+
+    // Submit state indicator
+    const form = document.getElementById('credentials-form');
+    const btnSubmit = document.getElementById('btn-submit');
+    if (form && btnSubmit) {
+        form.addEventListener('submit', () => {
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner spinner-icon"></i> <span>Initializing Session...</span>';
+        });
+    }
+</script>
+{% endblock %}

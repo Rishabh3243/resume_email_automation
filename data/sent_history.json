@@ -1,0 +1,257 @@
+[
+  {
+    "recruiter_email": "careers@scalextechnologies.com",
+    "job_role": "Gen AI Applications Developer",
+    "company_name": "Scalex Technology Solutions",
+    "subject": "Application for Gen AI Applications Developer Role – Rishabh Parmar",
+    "body_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;\">\n    <div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Respected HR Team,</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I’m reaching out to express my interest in the Gen AI Applications Developer position at <strong>Scalex Technology Solutions</strong>. The role closely aligns with my experience and interests in <strong>Computer Vision, Edge AI, and Generative AI</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have been working as a Junior AI/ML Engineer with hands-on experience in developing and deploying end-to-end AI solutions across both Edge Computer Vision and Applied Generative AI. My core work involves designing hardware-aware deep learning pipelines using technologies like Python, PyTorch, YOLO, TensorRT, and ONNX Runtime for embedded platforms including NVIDIA Jetson, NXP, and Raspberry Pi. Alongside my computer vision background, I also actively build Retrieval-Augmented Generation (RAG) architectures leveraging LLMs, LangChain, and ChromaDB to solve complex real-world problems.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I am passionate about bridging the gap between advanced AI models and practical hardware constraints to deliver highly optimized, real-time applications. I believe my comprehensive technical stack, hands-on industry experience, and strong problem-solving abilities would allow me to make an immediate and meaningful impact on the innovative projects at <strong>Scalex Technology Solutions</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have attached my resume for your consideration. I would sincerely appreciate the opportunity to discuss how my experience aligns with your team&#039;s requirements. Thank you for your time, and I look forward to hearing from you.</p>\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Rishabh Bharatbhai Parmar</strong></p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Email:</strong> <a href=\"mailto:rishabhpar7@gmail.com\" style=\"color: #2563eb; text-decoration: underline;\">rishabhpar7@gmail.com</a><br><strong>Phone:</strong> +91 9998217585<br><strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/rishabh-parmar-650541200\" target=\"_blank\" style=\"color: #2563eb; text-decoration: underline;\">https://www.linkedin.com/in/rishabh-parmar-650541200</a></p>\n    </div>\n</body>\n</html>",
+    "status": "SUCCESS",
+    "resume_attached": true,
+    "resume_path": "D:\\Rishabh CODES\\RESUME\\resume_email_automation\\ASSETS\\Rishabh_Parmar_Resume.pdf",
+    "error_message": null,
+    "checkpoints_log": [
+      {
+        "step": 1,
+        "title": "Recruiter Email Validation",
+        "status": "passed",
+        "detail": "Valid Recruiter Email confirmed (careers@scalextechnologies.com)."
+      },
+      {
+        "step": 2,
+        "title": "Resume Attachment Check",
+        "status": "passed",
+        "detail": "Resume PDF verified: Rishabh_Parmar_Resume.pdf (98.52 KB)."
+      },
+      {
+        "step": 3,
+        "title": "HTML Template Personalization",
+        "status": "passed",
+        "detail": "Subject: 'Application for Gen AI Applications Developer Role – Rishabh Parmar'. Email payload constructed."
+      },
+      {
+        "step": 4,
+        "title": "Gmail SMTP Authentication",
+        "status": "passed",
+        "detail": "Authenticated securely as rishabhpar7@gmail.com."
+      },
+      {
+        "step": 5,
+        "title": "Sending Application Email",
+        "status": "passed",
+        "detail": "Email successfully dispatched to careers@scalextechnologies.com."
+      },
+      {
+        "step": 6,
+        "title": "Automation Delay Throttling",
+        "status": "passed",
+        "detail": "Throttle delay of 3.0s completed. Process finalized."
+      }
+    ],
+    "id": 5,
+    "sent_at_formatted": "2026-09-24 12:57:51 UTC"
+  },
+  {
+    "recruiter_email": "hr@sparkzsolutions.com",
+    "job_role": "AI/ML Engineer",
+    "company_name": "Sparkz Solutions",
+    "subject": "Application for AI/ML Engineer Role – Rishabh Parmar",
+    "body_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;\">\n    <div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Respected HR Team,</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I’m reaching out to express my interest in the AI/ML Engineer position at <strong>Sparkz Solutions</strong>. The role closely aligns with my experience and interests in <strong>Computer Vision, Edge AI, and Generative AI</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have been working as a AI/ML Engineer with hands-on experience in developing and deploying end-to-end AI solutions across both Edge Computer Vision and Applied Generative AI. My core work involves designing hardware-aware deep learning pipelines using technologies like Python, PyTorch, YOLO, TensorRT, and ONNX Runtime for embedded platforms including NVIDIA Jetson, NXP, and Raspberry Pi. Alongside my computer vision background, I also actively build Retrieval-Augmented Generation (RAG) architectures leveraging LLMs, LangChain, and ChromaDB to solve complex real-world problems.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I am passionate about bridging the gap between advanced AI models and practical hardware constraints to deliver highly optimized, real-time applications. I believe my comprehensive technical stack, hands-on industry experience, and strong problem-solving abilities would allow me to make an immediate and meaningful impact on the innovative projects at <strong>Sparkz Solutions</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have attached my resume for your consideration. I would sincerely appreciate the opportunity to discuss how my experience aligns with your team&#039;s requirements. Thank you for your time, and I look forward to hearing from you.</p>\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Rishabh Bharatbhai Parmar</strong></p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Email:</strong> <a href=\"mailto:rishabhpar7@gmail.com\" style=\"color: #2563eb; text-decoration: underline;\">rishabhpar7@gmail.com</a><br><strong>Phone:</strong> +91 9998217585<br><strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/rishabh-parmar-650541200\" target=\"_blank\" style=\"color: #2563eb; text-decoration: underline;\">https://www.linkedin.com/in/rishabh-parmar-650541200</a></p>\n    </div>\n</body>\n</html>",
+    "status": "SUCCESS",
+    "resume_attached": true,
+    "resume_path": "D:\\Rishabh CODES\\RESUME\\resume_email_automation\\ASSETS\\Rishabh_Parmar_Resume.pdf",
+    "error_message": null,
+    "checkpoints_log": [
+      {
+        "step": 1,
+        "title": "Recruiter Email Validation",
+        "status": "passed",
+        "detail": "Valid Recruiter Email confirmed (hr@sparkzsolutions.com)."
+      },
+      {
+        "step": 2,
+        "title": "Resume Attachment Check",
+        "status": "passed",
+        "detail": "Resume PDF verified: Rishabh_Parmar_Resume.pdf (98.52 KB)."
+      },
+      {
+        "step": 3,
+        "title": "HTML Template Personalization",
+        "status": "passed",
+        "detail": "Subject: 'Application for AI/ML Engineer Role – Rishabh Parmar'. Email payload constructed."
+      },
+      {
+        "step": 4,
+        "title": "Gmail SMTP Authentication",
+        "status": "passed",
+        "detail": "Authenticated securely as rishabhpar7@gmail.com."
+      },
+      {
+        "step": 5,
+        "title": "Sending Application Email",
+        "status": "passed",
+        "detail": "Email successfully dispatched to hr@sparkzsolutions.com."
+      },
+      {
+        "step": 6,
+        "title": "Automation Delay Throttling",
+        "status": "passed",
+        "detail": "Throttle delay of 3.0s completed. Process finalized."
+      }
+    ],
+    "id": 4,
+    "sent_at_formatted": "2026-09-24 11:56:52 UTC"
+  },
+  {
+    "recruiter_email": "rishabhpar7@gmail.com",
+    "job_role": "AI/ML Engineer",
+    "company_name": "Sparkz Solutions",
+    "subject": "Application for AI/ML Engineer Role – Rishabh Parmar",
+    "body_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;\">\n    <div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Respected HR Team,</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I’m reaching out to express my interest in the AI/ML Engineer position at TY. The role closely aligns with my experience and interests in <strong>Computer Vision, Edge AI, and Generative AI</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have been working as a AI/ML Engineer with hands-on experience in developing and deploying end-to-end AI solutions across both Edge Computer Vision and Applied Generative AI. My core work involves designing hardware-aware deep learning pipelines using technologies like Python, PyTorch, YOLO, TensorRT, and ONNX Runtime for embedded platforms including NVIDIA Jetson, NXP, and Raspberry Pi. Alongside my computer vision background, I also actively build Retrieval-Augmented Generation (RAG) architectures leveraging LLMs, LangChain, and ChromaDB to solve complex real-world problems.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I am passionate about bridging the gap between advanced AI models and practical hardware constraints to deliver highly optimized, real-time applications. I believe my comprehensive technical stack, hands-on industry experience, and strong problem-solving abilities would allow me to make an immediate and meaningful impact on the innovative projects at TY.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have attached my resume for your consideration. I would sincerely appreciate the opportunity to discuss how my experience aligns with your team&#039;s requirements. Thank you for your time, and I look forward to hearing from you.</p>\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Rishabh Bharatbhai Parmar</strong></p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Email:</strong> <a href=\"mailto:rishabhpar7@gmail.com\" style=\"color: #2563eb; text-decoration: underline;\">rishabhpar7@gmail.com</a><br><strong>Phone:</strong> +91 9998217585<br><strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/rishabh-parmar-650541200\" target=\"_blank\" style=\"color: #2563eb; text-decoration: underline;\">https://www.linkedin.com/in/rishabh-parmar-650541200</a></p>\n    </div>\n</body>\n</html>",
+    "status": "SUCCESS",
+    "resume_attached": true,
+    "resume_path": "D:\\Rishabh CODES\\RESUME\\resume_email_automation\\ASSETS\\Rishabh_Parmar_Resume.pdf",
+    "error_message": null,
+    "checkpoints_log": [
+      {
+        "step": 1,
+        "title": "Recruiter Email Validation",
+        "status": "passed",
+        "detail": "Valid Recruiter Email confirmed (rishabhpar7@gmail.com)."
+      },
+      {
+        "step": 2,
+        "title": "Resume Attachment Check",
+        "status": "passed",
+        "detail": "Resume PDF verified: Rishabh_Parmar_Resume.pdf (98.52 KB)."
+      },
+      {
+        "step": 3,
+        "title": "HTML Template Personalization",
+        "status": "passed",
+        "detail": "Subject: 'Application for AI/ML Engineer Role – Rishabh Parmar'. Email payload constructed."
+      },
+      {
+        "step": 4,
+        "title": "Gmail SMTP Authentication",
+        "status": "passed",
+        "detail": "Authenticated securely as rishabhpar7@gmail.com."
+      },
+      {
+        "step": 5,
+        "title": "Sending Application Email",
+        "status": "passed",
+        "detail": "Email successfully dispatched to rishabhpar7@gmail.com."
+      },
+      {
+        "step": 6,
+        "title": "Automation Delay Throttling",
+        "status": "passed",
+        "detail": "Throttle delay of 3.0s completed. Process finalized."
+      }
+    ],
+    "id": 3,
+    "sent_at_formatted": "2026-09-24 11:55:48 UTC"
+  },
+  {
+    "recruiter_email": "rishabhpar7@gmail.com",
+    "job_role": "AI/ML Engineer",
+    "company_name": "TY",
+    "subject": "Application for AI/ML Engineer Role – Rishabh Parmar",
+    "body_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;\">\n    <div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Respected HR Team,</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I’m reaching out to express my interest in the AI/ML Engineer position at <strong>TY</strong>. The role closely aligns with my experience and interests in <strong>Computer Vision, Edge AI, and Generative AI</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have been working as a AI/ML Engineer with hands-on experience in developing and deploying end-to-end AI solutions across both Edge Computer Vision and Applied Generative AI. My core work involves designing hardware-aware deep learning pipelines using technologies like Python, PyTorch, YOLO, TensorRT, and ONNX Runtime for embedded platforms including NVIDIA Jetson, NXP, and Raspberry Pi. Alongside my computer vision background, I also actively build Retrieval-Augmented Generation (RAG) architectures leveraging LLMs, LangChain, and ChromaDB to solve complex real-world problems.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I am passionate about bridging the gap between advanced AI models and practical hardware constraints to deliver highly optimized, real-time applications. I believe my comprehensive technical stack, hands-on industry experience, and strong problem-solving abilities would allow me to make an immediate and meaningful impact on the innovative projects at <strong>TY</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have attached my resume for your consideration. I would sincerely appreciate the opportuni<strong>TY</strong> to discuss how my experience aligns with your team&#039;s requirements. Thank you for your time, and I look forward to hearing from you.</p>\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Rishabh Bharatbhai Parmar</strong></p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\"><strong>Email:</strong> <a href=\"mailto:rishabhpar7@gmail.com\" style=\"color: #2563eb; text-decoration: underline;\">rishabhpar7@gmail.com</a><br><strong>Phone:</strong> +91 9998217585<br><strong>LinkedIn:</strong> <a href=\"https://www.linkedin.com/in/rishabh-parmar-650541200\" target=\"_blank\" style=\"color: #2563eb; text-decoration: underline;\">https://www.linkedin.com/in/rishabh-parmar-650541200</a></p>\n    </div>\n</body>\n</html>",
+    "status": "SUCCESS",
+    "resume_attached": true,
+    "resume_path": "D:\\Rishabh CODES\\RESUME\\resume_email_automation\\ASSETS\\Rishabh_Parmar_Resume.pdf",
+    "error_message": null,
+    "checkpoints_log": [
+      {
+        "step": 1,
+        "title": "Recruiter Email Validation",
+        "status": "passed",
+        "detail": "Valid Recruiter Email confirmed (rishabhpar7@gmail.com)."
+      },
+      {
+        "step": 2,
+        "title": "Resume Attachment Check",
+        "status": "passed",
+        "detail": "Resume PDF verified: Rishabh_Parmar_Resume.pdf (98.52 KB)."
+      },
+      {
+        "step": 3,
+        "title": "HTML Template Personalization",
+        "status": "passed",
+        "detail": "Subject: 'Application for AI/ML Engineer Role – Rishabh Parmar'. Email payload constructed."
+      },
+      {
+        "step": 4,
+        "title": "Gmail SMTP Authentication",
+        "status": "passed",
+        "detail": "Authenticated securely as rishabhpar7@gmail.com."
+      },
+      {
+        "step": 5,
+        "title": "Sending Application Email",
+        "status": "passed",
+        "detail": "Email successfully dispatched to rishabhpar7@gmail.com."
+      },
+      {
+        "step": 6,
+        "title": "Automation Delay Throttling",
+        "status": "passed",
+        "detail": "Throttle delay of 3.0s completed. Process finalized."
+      }
+    ],
+    "id": 2,
+    "sent_at_formatted": "2026-09-24 11:49:44 UTC"
+  },
+  {
+    "recruiter_email": "rishabhpar7@gmail.com",
+    "job_role": "AI/ML Engineer",
+    "company_name": "Rhn",
+    "subject": "Application for AI/ML Engineer Role – Rishabh Parmar",
+    "body_html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body style=\"margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;\">\n    <div style=\"font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Respected HR Team,</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I’m reaching out to express my interest in the AI/ML Engineer position at <strong>Rhn</strong>. The role closely aligns with my experience and interests in <strong>Computer Vision, Edge AI, and Generative AI</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have been working as a AI/ML Engineer with hands-on experience in developing and deploying end-to-end AI solutions across both Edge Computer Vision and Applied Generative AI. My core work involves designing hardware-aware deep learning pipelines using technologies like Python, PyTorch, YOLO, TensorRT, and ONNX Runtime for embedded platforms including NVIDIA Jetson, NXP, and Raspberry Pi. Alongside my computer vision background, I also actively build Retrieval-Augmented Generation (RAG) architectures leveraging LLMs, LangChain, and ChromaDB to solve complex real-world problems.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I am passionate about bridging the gap between advanced AI models and practical hardware constraints to deliver highly optimized, real-time applications. I believe my comprehensive technical stack, hands-on industry experience, and strong problem-solving abilities would allow me to make an immediate and meaningful impact on the innovative projects at <strong>Rhn</strong>.</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">I have attached my resume for your consideration. I would sincerely appreciate the opportunity to discuss how my experience aligns with your team&#039;s requirements. Thank you for your time, and I look forward to hearing from you.</p>\n        <hr style=\"border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;\">\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Rishabh Bharatbhai Parmar</p>\n        <p style=\"margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;\">Email: <a href=\"mailto:rishabhpar7@gmail.com\" style=\"color: #2563eb; text-decoration: underline;\">rishabhpar7@gmail.com</a><br>Phone: +91 9998217585<br>LinkedIn: <a href=\"https://www.linkedin.com/in/rishabh-parmar-650541200\" target=\"_blank\" style=\"color: #2563eb; text-decoration: underline;\">https://www.linkedin.com/in/rishabh-parmar-650541200</a></p>\n    </div>\n</body>\n</html>",
+    "status": "SUCCESS",
+    "resume_attached": true,
+    "resume_path": "D:\\Rishabh CODES\\RESUME\\resume_email_automation\\ASSETS\\Rishabh_Parmar_Resume.pdf",
+    "error_message": null,
+    "checkpoints_log": [
+      {
+        "step": 1,
+        "title": "Recruiter Email Validation",
+        "status": "passed",
+        "detail": "Valid Recruiter Email confirmed (rishabhpar7@gmail.com)."
+      },
+      {
+        "step": 2,
+        "title": "Resume Attachment Check",
+        "status": "passed",
+        "detail": "Resume PDF verified: Rishabh_Parmar_Resume.pdf (98.52 KB)."
+      },
+      {
+        "step": 3,
+        "title": "HTML Template Personalization",
+        "status": "passed",
+        "detail": "Subject: 'Application for AI/ML Engineer Role – Rishabh Parmar'. Email payload constructed."
+      },
+      {
+        "step": 4,
+        "title": "Gmail SMTP Authentication",
+        "status": "passed",
+        "detail": "Authenticated securely as rishabhpar7@gmail.com."
+      },
+      {
+        "step": 5,
+        "title": "Sending Application Email",
+        "status": "passed",
+        "detail": "Email successfully dispatched to rishabhpar7@gmail.com."
+      },
+      {
+        "step": 6,
+        "title": "Automation Delay Throttling",
+        "status": "passed",
+        "detail": "Throttle delay of 3.0s completed. Process finalized."
+      }
+    ],
+    "id": 1,
+    "sent_at_formatted": "2026-09-24 11:29:27 UTC"
+  }
+]

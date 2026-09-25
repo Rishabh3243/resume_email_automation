@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Resume Mailer Automation - Rishabh Parmar{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-['Inter',sans-serif]">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md">
+                        <i class="fa-solid fa-paper-plane text-lg"></i>
+                    </div>
+                    <div>
+                        <a href="{% url 'mailer:index' %}" class="font-bold text-lg text-slate-900 tracking-tight hover:text-blue-600 transition">
+                            JobApp Dispatcher
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation Links & Session State -->
+                <nav class="flex items-center space-x-3 sm:space-x-4">
+                    {% if request.session.sender_email %}
+                        <a href="{% url 'mailer:index' %}" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square"></i> Compose &amp; Preview
+                        </a>
+                        <a href="{% url 'mailer:history' %}" class="px-3 py-2 text-sm font-medium rounded-lg text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left"></i> Sent History
+                        </a>
+                        <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200" title="Active Session Email">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="font-mono">{{ request.session.sender_email }}</span>
+                        </span>
+                        <a href="{% url 'mailer:logout_credentials' %}" class="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-lg transition flex items-center gap-1.5" title="Clear session credentials and log out">
+                            <i class="fa-solid fa-arrow-right-from-bracket text-rose-500"></i>
+                            <span class="hidden sm:inline">Exit Session</span>
+                        </a>
+                    {% else %}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-200">
+                            <i class="fa-solid fa-lock text-amber-500 mr-1.5"></i>
+                            Session Credentials Required
+                        </span>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-shield-halved text-blue-600"></i>
+                <span>Automated Job Application Engine &bull; In-Memory Session Security</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span>Resume: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs text-slate-700">./ASSETS/Rishabh_Parmar_Resume.pdf</code></span>
+                <span>Delay: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs text-slate-700">3.0s</code></span>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
