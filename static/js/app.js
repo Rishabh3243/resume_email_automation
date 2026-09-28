@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCloseX = document.getElementById('modal-close-x');
     const modalCloseBtn = document.getElementById('modal-close-btn');
     const modalResultBanner = document.getElementById('modal-result-banner');
+    const modalHistoryBtn = document.getElementById('modal-history-btn');
 
     // Helper: Escape HTML
     function escapeHtml(str) {
