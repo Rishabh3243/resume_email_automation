@@ -1,5 +1,4 @@
 import json
-import os
 from pathlib import Path
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
@@ -30,7 +29,6 @@ def setup_credentials(request):
             elif len(gmail_app_password) < 8:
                 error = "Google App Password appears too short. It should be 16 characters."
             else:
-                # Store in signed session cookie (transient, vanishes on browser close)
                 request.session['sender_email'] = sender_email
                 request.session['gmail_app_password'] = gmail_app_password
                 request.session.modified = True
@@ -53,8 +51,8 @@ def logout_credentials(request):
 
 def index(request):
     """
-    Main MVC view for composing, editing, previewing, and sending job applications.
-    Zero-migration setup. Requires active session credentials.
+    Main view for composing, editing, previewing, and sending job applications.
+    Requires active session credentials.
     """
     sender_email = request.session.get('sender_email')
     gmail_app_password = request.session.get('gmail_app_password')
@@ -75,16 +73,17 @@ def index(request):
         'subject': default_subject,
         'body_text': initial_body_text,
         'body_html': initial_body_html,
+        'resume_choice': 'default',
     })
 
-    # Check environment & session configuration health
+    # Check default resume file health
     resume_path_obj = EmailService.resolve_resume_path()
     env_status = {
         'sender_email': sender_email,
         'has_password': True,
         'smtp_host': settings.SMTP_HOST,
         'smtp_port': settings.SMTP_PORT,
-        'resume_path': settings.RESUME_PATH,
+        'resume_path': str(resume_path_obj),
         'resume_exists': resume_path_obj.exists() and resume_path_obj.is_file(),
         'resume_filename': resume_path_obj.name,
         'delay_seconds': settings.DELAY_BETWEEN_EMAILS,
@@ -101,14 +100,17 @@ def index(request):
 @require_http_methods(["GET", "POST"])
 def get_template_api(request):
     """
-    API endpoint returning original default template populated with job_role and company_name.
-    Used by the 'Reset to Original Template' button and dynamic live generator.
+    API endpoint returning default clean template populated with job_role and company_name.
+    Used by the 'Reset to Default' button.
     """
-    job_role = request.GET.get('job_role', '').strip() or request.POST.get('job_role', '').strip()
-    company_name = request.GET.get('company_name', '').strip() or request.POST.get('company_name', '').strip()
+    job_role = (request.GET.get('job_role') or request.POST.get('job_role') or '').strip()
+    company_name = (request.GET.get('company_name') or request.POST.get('company_name') or '').strip()
+    reset_all = request.GET.get('reset_all', 'false').lower() in ('true', '1')
 
-    if not job_role:
+    if reset_all or not job_role:
         job_role = "Junior AI/ML Engineer"
+        if reset_all:
+            company_name = ""
 
     has_company = bool(company_name)
     raw_plain = EmailService.get_plain_text_template(has_company=has_company)
@@ -119,7 +121,8 @@ def get_template_api(request):
     return JsonResponse({
         'success': True,
         'has_company': has_company,
-        'template_used': 'with_company.html' if has_company else 'without_company.html',
+        'job_role': job_role,
+        'company_name': company_name,
         'subject': subject,
         'body_text': rendered_text,
         'body_html': rendered_html,
@@ -149,7 +152,7 @@ def validate_email_api(request):
 def send_email_api(request):
     """
     Handles step-by-step sending with real-time checkpoints for the popup dialog.
-    Uses transient credentials from the user's active session.
+    Supports both JSON and multipart/form-data for custom resume uploads.
     """
     sender_email = request.session.get('sender_email')
     gmail_password = request.session.get('gmail_app_password')
@@ -161,12 +164,12 @@ def send_email_api(request):
         }, status=401)
 
     try:
-        if request.content_type == 'application/json':
+        if request.content_type and 'application/json' in request.content_type:
             payload = json.loads(request.body)
         else:
             payload = request.POST
     except Exception as e:
-        return JsonResponse({'success': False, 'error': f"Invalid request body: {str(e)}"}, status=400)
+        return JsonResponse({'success': False, 'error': f"Invalid request payload: {str(e)}"}, status=400)
 
     recruiter_email = payload.get('recruiter_email', '').strip()
     job_role = payload.get('job_role', '').strip() or "Junior AI/ML Engineer"
@@ -174,9 +177,12 @@ def send_email_api(request):
     subject = payload.get('subject', '').strip()
     body_text = payload.get('body_text', '').strip()
     body_html = payload.get('body_html', '').strip()
+    resume_choice = payload.get('resume_choice', 'default').strip().lower()
 
     if not body_html and body_text:
         body_html = EmailService.plain_text_to_html(body_text, company_name)
+
+    custom_resume_file = request.FILES.get('custom_resume')
 
     # Execute sending through EmailService with session credentials
     result = EmailService.send_application_email(
@@ -186,6 +192,8 @@ def send_email_api(request):
         custom_subject=subject,
         custom_body_html=body_html,
         custom_body_text=body_text,
+        resume_choice=resume_choice,
+        custom_resume_file=custom_resume_file,
         sender_email=sender_email,
         gmail_password=gmail_password,
     )
@@ -193,5 +201,7 @@ def send_email_api(request):
     return JsonResponse({
         'success': result['success'],
         'checkpoints': result['checkpoints'],
+        'attachment_filename': result.get('attachment_filename'),
+        'normalized_email': result.get('normalized_email'),
         'error': result.get('error'),
     })

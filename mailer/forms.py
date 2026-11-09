@@ -5,7 +5,7 @@ class ComposeEmailForm(forms.Form):
         required=True,
         label="Recruiter Email",
         widget=forms.EmailInput(attrs={
-            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-800 text-sm shadow-sm',
+            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-slate-800 text-sm shadow-sm',
             'placeholder': 'e.g. hr@company.com or recruiter@gmail.com',
             'id': 'id_recruiter_email'
         })
@@ -16,7 +16,7 @@ class ComposeEmailForm(forms.Form):
         initial="Junior AI/ML Engineer",
         label="Job Role",
         widget=forms.TextInput(attrs={
-            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-800 text-sm shadow-sm',
+            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-slate-800 text-sm shadow-sm',
             'placeholder': 'e.g. Junior AI/ML Engineer / Computer Vision Engineer',
             'id': 'id_job_role'
         })
@@ -26,8 +26,8 @@ class ComposeEmailForm(forms.Form):
         required=False,
         label="Company Name (Optional)",
         widget=forms.TextInput(attrs={
-            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-800 text-sm shadow-sm',
-            'placeholder': 'Leave blank to use without-company template',
+            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-slate-800 text-sm shadow-sm',
+            'placeholder': 'Leave blank to use template without company',
             'id': 'id_company_name'
         })
     )
@@ -36,7 +36,7 @@ class ComposeEmailForm(forms.Form):
         required=True,
         label="Email Subject",
         widget=forms.TextInput(attrs={
-            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-gray-800 text-sm shadow-sm',
+            'class': 'form-input w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-slate-800 text-sm shadow-sm',
             'placeholder': 'Application for <job_role> Role – Rishabh Parmar',
             'id': 'id_subject'
         })
@@ -45,7 +45,7 @@ class ComposeEmailForm(forms.Form):
         required=True,
         label="Email Body",
         widget=forms.Textarea(attrs={
-            'class': 'form-textarea w-full font-sans text-sm px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm h-80 resize-y leading-relaxed text-gray-800',
+            'class': 'form-textarea w-full font-sans text-sm px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition shadow-sm h-80 resize-y leading-relaxed text-slate-800',
             'placeholder': 'Write your email body in plain text...',
             'id': 'id_body_text'
         })
@@ -54,6 +54,21 @@ class ComposeEmailForm(forms.Form):
         required=False,
         widget=forms.HiddenInput(attrs={
             'id': 'id_body_html'
+        })
+    )
+    resume_choice = forms.CharField(
+        required=False,
+        initial='default',
+        widget=forms.HiddenInput(attrs={
+            'id': 'id_resume_choice'
+        })
+    )
+    custom_resume = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={
+            'class': 'hidden',
+            'id': 'id_custom_resume',
+            'accept': '.pdf,.docx,.doc'
         })
     )
 

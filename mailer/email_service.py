@@ -1,4 +1,6 @@
 import os
+import re
+import html
 import time
 from pathlib import Path
 from email.mime.multipart import MIMEMultipart
@@ -10,8 +12,8 @@ from email_validator import validate_email, EmailNotValidError
 
 class EmailService:
     """
-    Handles recruiter email validation via email-validator,
-    template loading & dynamic interpolation, resume attachment,
+    Handles recruiter email validation, template interpolation,
+    resume attachment (default file or uploaded custom file),
     and SMTP transmission with checkpoint tracking.
     """
 
@@ -27,8 +29,6 @@ class EmailService:
         
         email_str = email_str.strip()
         try:
-            # Deliverability check will verify domain MX records
-            # If DNS resolution fails due to local network, fallback to syntax check
             try:
                 validation = validate_email(email_str, check_deliverability=True)
             except Exception:
@@ -41,21 +41,9 @@ class EmailService:
             return False, f"Email validation failed: {str(e)}"
 
     @staticmethod
-    def get_template_content(has_company: bool) -> str:
-        """
-        Loads the raw HTML template based on whether company name is present.
-        """
-        template_name = 'with_company.html' if has_company else 'without_company.html'
-        template_path = Path(settings.BASE_DIR) / 'templates' / 'emails' / template_name
-        if template_path.exists():
-            with open(template_path, 'r', encoding='utf-8') as f:
-                return f.read()
-        return ""
-
-    @staticmethod
     def get_plain_text_template(has_company: bool) -> str:
         """
-        Returns clean, standard plain text email body without subject repetition.
+        Returns clean, standard plain text email body.
         """
         if has_company:
             return (
@@ -120,8 +108,8 @@ class EmailService:
     @staticmethod
     def plain_text_to_html(text: str, company_name: str = "") -> str:
         """
-        Converts user plain text into simple, left-aligned HTML email,
-        automatically bolding company name and key technical domains.
+        Converts user plain text into clean, modern, left-aligned HTML email,
+        safely highlighting key domains and contact info.
         """
         if not text:
             return ""
@@ -129,9 +117,6 @@ class EmailService:
         trimmed = text.strip()
         if trimmed.lower().startswith('<!doctype') or trimmed.lower().startswith('<html'):
             return trimmed
-
-        import re
-        import html
 
         normalized = trimmed.replace('\r\n', '\n').replace('\r', '\n')
         paragraphs = re.split(r'\n{2,}', normalized)
@@ -142,7 +127,7 @@ class EmailService:
             if not p_clean:
                 continue
 
-            # Standalone horizontal line
+            # Standalone horizontal divider
             if re.match(r'^-{3,}$', p_clean):
                 formatted_paragraphs.append('<hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;">')
                 continue
@@ -158,37 +143,23 @@ class EmailService:
             # Support markdown bold syntax: **word** -> <strong>word</strong>
             p_escaped = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', p_escaped)
 
-            # Bold company name if specified and present
+            # Bold company name if present and not already bolded
             if company_name and company_name.strip():
                 c_name = html.escape(company_name.strip())
-                p_escaped = re.sub(
-                    rf'(?<!<strong>){re.escape(c_name)}(?!</strong>)',
-                    f'<strong>{c_name}</strong>',
-                    p_escaped,
-                    flags=re.IGNORECASE
-                )
+                pattern = rf'(?<!<strong>)\b{re.escape(c_name)}\b(?!</strong>)'
+                p_escaped = re.sub(pattern, f'<strong>{c_name}</strong>', p_escaped, flags=re.IGNORECASE)
 
-            # Bold key domains: "Computer Vision, Edge AI, and Generative AI"
+            # Bold key domains if not already wrapped
             skills_patterns = [
                 r'Computer Vision,\s*Edge AI,?\s*and\s*Generative AI',
                 r'Computer Vision,\s*Edge AI\s*and\s*Generative AI',
             ]
             for pat in skills_patterns:
-                p_escaped = re.sub(
-                    rf'(?<!<strong>)({pat})(?!</strong>)',
-                    r'<strong>\1</strong>',
-                    p_escaped,
-                    flags=re.IGNORECASE
-                )
+                p_escaped = re.sub(rf'(?<!<strong>)({pat})(?!</strong>)', r'<strong>\1</strong>', p_escaped, flags=re.IGNORECASE)
 
             # Bold name and contact labels
-            signature_labels = [r'Rishabh Bharatbhai Parmar', r'Email:', r'Phone:', r'LinkedIn:']
-            for sig in signature_labels:
-                p_escaped = re.sub(
-                    rf'(?<!<strong>)({sig})(?!</strong>)',
-                    r'<strong>\1</strong>',
-                    p_escaped
-                )
+            for sig in [r'Rishabh Bharatbhai Parmar', r'Email:', r'Phone:', r'LinkedIn:']:
+                p_escaped = re.sub(rf'(?<!<strong>)({sig})(?!</strong>)', r'<strong>\1</strong>', p_escaped)
 
             # Linkify URLs: https://...
             p_escaped = re.sub(
@@ -210,7 +181,7 @@ class EmailService:
                 formatted_paragraphs.append('<hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0 16px 0;">')
 
             formatted_paragraphs.append(
-                f'<p style="margin: 0 0 16px 0; font-size: 14px; line-height: 1.6; color: #222222; text-align: left;">{p_escaped}</p>'
+                f'<p style="margin: 0 0 16px 0; font-size: 14px; line-height: 1.65; color: #1e293b; text-align: left;">{p_escaped}</p>'
             )
 
         body_inner = '\n        '.join(formatted_paragraphs)
@@ -221,33 +192,13 @@ class EmailService:
             '    <meta charset="UTF-8">\n'
             '    <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
             '</head>\n'
-            '<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; background-color: #ffffff; text-align: left;">\n'
-            '    <div style="font-family: Arial, Helvetica, sans-serif; font-size: 14px; line-height: 1.6; color: #222222; text-align: left; padding: 10px 0;">\n'
+            '<body style="margin: 0; padding: 20px 24px; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.65; color: #1e293b; background-color: #ffffff; text-align: left;">\n'
+            '    <div style="max-width: 680px; margin: 0 auto; text-align: left;">\n'
             f'        {body_inner}\n'
             '    </div>\n'
             '</body>\n'
             '</html>'
         )
-
-    @staticmethod
-    def render_template(template_str: str, job_role: str, company_name: str = "") -> str:
-        """
-        Replaces <job_role> and <company_name> in the template.
-        Supports both raw '<job_role>' / '<company_name>' and '&lt;job_role&gt;' / '&lt;company_name&gt;'.
-        """
-        job_role_val = job_role.strip() if job_role else "Junior AI/ML Engineer"
-        company_name_val = company_name.strip() if company_name else ""
-
-        rendered = template_str
-        # Replace unescaped placeholders
-        rendered = rendered.replace('<job_role>', job_role_val)
-        rendered = rendered.replace('<company_name>', company_name_val)
-        
-        # Replace HTML escaped placeholders
-        rendered = rendered.replace('&lt;job_role&gt;', job_role_val)
-        rendered = rendered.replace('&lt;company_name&gt;', company_name_val)
-
-        return rendered
 
     @staticmethod
     def get_default_subject(job_role: str) -> str:
@@ -260,24 +211,31 @@ class EmailService:
     @staticmethod
     def resolve_resume_path(custom_path: str = None) -> Path:
         """
-        Resolves absolute path for resume PDF from .env or override.
+        Resolves absolute path for default resume PDF.
         """
-        target = custom_path or getattr(settings, 'RESUME_PATH', './ASSETS/resume.pdf')
+        target = custom_path or getattr(settings, 'RESUME_PATH', './ASSETS/Rishabh_Parmar_Resume.pdf')
         path_obj = Path(target)
         if not path_obj.is_absolute():
             path_obj = (Path(settings.BASE_DIR) / path_obj).resolve()
+        
+        # Fallback if target does not exist
+        if not path_obj.exists():
+            alt = Path(settings.BASE_DIR) / 'ASSETS' / 'Rishabh_Parmar_Resume.pdf'
+            if alt.exists():
+                return alt
         return path_obj
 
     @classmethod
     def send_application_email(cls, recruiter_email: str, job_role: str, company_name: str,
                                custom_subject: str, custom_body_html: str,
-                               resume_override_path: str = None,
+                               resume_choice: str = 'default',
+                               custom_resume_file = None,
                                custom_body_text: str = None,
                                sender_email: str = None,
                                gmail_password: str = None):
         """
         Executes the step-by-step email sending process with checkpoint reporting.
-        Uses transient session credentials provided by the active user session.
+        Supports both default resume file and user-uploaded custom resume.
         """
         checkpoints = []
 
@@ -303,40 +261,78 @@ class EmailService:
         checkpoints[-1]['status'] = 'passed'
         checkpoints[-1]['detail'] = f"Valid Recruiter Email confirmed ({normalized_email})."
 
-        # Checkpoint 2: Verify Resume File
+        # Checkpoint 2: Verify Resume File (Default vs Uploaded)
         checkpoints.append({
             'step': 2,
-            'title': 'Resume Attachment Check',
+            'title': 'Resume Attachment Verification',
             'status': 'running',
-            'detail': 'Locating and verifying resume PDF attachment...'
+            'detail': 'Verifying resume attachment...'
         })
 
-        resume_path = cls.resolve_resume_path(resume_override_path)
-        if not resume_path.exists() or not resume_path.is_file():
-            err_msg = f"Resume file not found at: {resume_path}. Please verify RESUME_PATH in .env."
-            checkpoints[-1]['status'] = 'failed'
-            checkpoints[-1]['detail'] = err_msg
-            return {
-                'success': False,
-                'checkpoints': checkpoints,
-                'error': err_msg
-            }
-        
-        file_size_kb = round(os.path.getsize(resume_path) / 1024, 2)
-        checkpoints[-1]['status'] = 'passed'
-        checkpoints[-1]['detail'] = f"Resume PDF verified: {resume_path.name} ({file_size_kb} KB)."
+        attachment_bytes = None
+        attachment_filename = None
+        is_custom_resume = (resume_choice == 'upload')
+
+        if is_custom_resume:
+            if not custom_resume_file:
+                err_msg = "Custom resume option was chosen, but no file was uploaded. Please attach a resume or select 'Use Default Resume'."
+                checkpoints[-1]['status'] = 'failed'
+                checkpoints[-1]['detail'] = err_msg
+                return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
+
+            try:
+                if hasattr(custom_resume_file, 'read'):
+                    attachment_bytes = custom_resume_file.read()
+                    attachment_filename = getattr(custom_resume_file, 'name', 'Resume.pdf')
+                elif isinstance(custom_resume_file, bytes):
+                    attachment_bytes = custom_resume_file
+                    attachment_filename = 'Resume.pdf'
+
+                if not attachment_bytes:
+                    err_msg = "Uploaded resume file is empty (0 bytes)."
+                    checkpoints[-1]['status'] = 'failed'
+                    checkpoints[-1]['detail'] = err_msg
+                    return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
+
+                size_kb = round(len(attachment_bytes) / 1024, 2)
+                checkpoints[-1]['status'] = 'passed'
+                checkpoints[-1]['detail'] = f"Custom resume verified: {attachment_filename} ({size_kb} KB)."
+            except Exception as e:
+                err_msg = f"Failed to process custom resume file: {str(e)}"
+                checkpoints[-1]['status'] = 'failed'
+                checkpoints[-1]['detail'] = err_msg
+                return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
+        else:
+            # Default Resume File
+            default_path = cls.resolve_resume_path()
+            if not default_path.exists() or not default_path.is_file():
+                err_msg = f"Default resume file not found at: {default_path}. Please verify ASSETS directory."
+                checkpoints[-1]['status'] = 'failed'
+                checkpoints[-1]['detail'] = err_msg
+                return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
+
+            try:
+                attachment_bytes = default_path.read_bytes()
+                attachment_filename = default_path.name
+                size_kb = round(len(attachment_bytes) / 1024, 2)
+                checkpoints[-1]['status'] = 'passed'
+                checkpoints[-1]['detail'] = f"Default resume verified: {attachment_filename} ({size_kb} KB)."
+            except Exception as e:
+                err_msg = f"Failed reading default resume file: {str(e)}"
+                checkpoints[-1]['status'] = 'failed'
+                checkpoints[-1]['detail'] = err_msg
+                return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
 
         # Checkpoint 3: Email Preparation & Personalization
         checkpoints.append({
             'step': 3,
-            'title': 'HTML Template Personalization',
+            'title': 'Email Compilation & Personalization',
             'status': 'running',
-            'detail': 'Compiling email subject and personalized HTML content...'
+            'detail': 'Compiling email subject and HTML content...'
         })
 
         final_subject = custom_subject.strip() if custom_subject else cls.get_default_subject(job_role)
-        
-        # Determine final HTML and plain text
+
         if custom_body_html and '<html' in custom_body_html.lower():
             final_html = custom_body_html.strip()
             final_text = custom_body_text.strip() if custom_body_text else ""
@@ -353,7 +349,7 @@ class EmailService:
             final_html = cls.plain_text_to_html(final_text, company_name)
 
         checkpoints[-1]['status'] = 'passed'
-        checkpoints[-1]['detail'] = f"Subject: '{final_subject}'. Email payload constructed."
+        checkpoints[-1]['detail'] = f"Subject: '{final_subject}'. Email payload ready."
 
         # Checkpoint 4: SMTP Gmail Connection & Authentication
         checkpoints.append({
@@ -367,14 +363,10 @@ class EmailService:
         clean_password = (gmail_password or '').strip().replace(' ', '')
 
         if not clean_sender or not clean_password:
-            err_msg = "Sender email or Gmail App Password is not provided for this session. Please launch credentials setup."
+            err_msg = "Sender email or Gmail App Password is not provided for this session."
             checkpoints[-1]['status'] = 'failed'
             checkpoints[-1]['detail'] = err_msg
-            return {
-                'success': False,
-                'checkpoints': checkpoints,
-                'error': err_msg
-            }
+            return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
 
         # Build MIME Message
         msg = MIMEMultipart('mixed')
@@ -391,28 +383,30 @@ class EmailService:
         msg_body.attach(html_part)
         msg.attach(msg_body)
 
-        # Attach Resume PDF
+        # Attach Resume
         try:
-            with open(resume_path, 'rb') as f:
-                pdf_attachment = MIMEApplication(f.read(), _subtype="pdf")
-                pdf_attachment.add_header('Content-Disposition', 'attachment', filename=resume_path.name)
-                msg.attach(pdf_attachment)
+            subtype = 'pdf'
+            fname_lower = (attachment_filename or '').lower()
+            if fname_lower.endswith('.docx'):
+                subtype = 'vnd.openxmlformats-officedocument.wordprocessingml.document'
+            elif fname_lower.endswith('.doc'):
+                subtype = 'msword'
+
+            pdf_attachment = MIMEApplication(attachment_bytes, _subtype=subtype)
+            pdf_attachment.add_header('Content-Disposition', 'attachment', filename=attachment_filename)
+            msg.attach(pdf_attachment)
         except Exception as e:
-            err_msg = f"Failed to attach resume PDF: {str(e)}"
+            err_msg = f"Failed to attach resume file: {str(e)}"
             checkpoints[-1]['status'] = 'failed'
             checkpoints[-1]['detail'] = err_msg
-            return {
-                'success': False,
-                'checkpoints': checkpoints,
-                'error': err_msg
-            }
+            return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
 
         # Checkpoint 5: Sending Email via SMTP
         checkpoints.append({
             'step': 5,
             'title': 'Sending Application Email',
             'status': 'running',
-            'detail': f"Dispatching email with attached resume to {normalized_email}..."
+            'detail': f"Dispatching email with {attachment_filename} to {normalized_email}..."
         })
 
         try:
@@ -422,8 +416,7 @@ class EmailService:
                     server.starttls()
                     server.ehlo()
                 server.login(clean_sender, clean_password)
-                
-                # Checkpoint 4 marked passed upon successful login
+
                 checkpoints[-2]['status'] = 'passed'
                 checkpoints[-2]['detail'] = f"Authenticated securely as {clean_sender}."
 
@@ -432,25 +425,17 @@ class EmailService:
             checkpoints[-1]['status'] = 'passed'
             checkpoints[-1]['detail'] = f"Email successfully dispatched to {normalized_email}."
         except smtplib.SMTPAuthenticationError:
-            err_msg = "SMTP Authentication Failed. Please check the 16-character Gmail App Password entered for this session."
+            err_msg = "SMTP Authentication Failed. Please verify your 16-character Google App Password."
             checkpoints[-2]['status'] = 'failed'
             checkpoints[-2]['detail'] = err_msg
             checkpoints[-1]['status'] = 'failed'
             checkpoints[-1]['detail'] = "Transmission aborted due to authentication error."
-            return {
-                'success': False,
-                'checkpoints': checkpoints,
-                'error': err_msg
-            }
+            return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
         except Exception as e:
             err_msg = f"SMTP Transmission error: {str(e)}"
             checkpoints[-1]['status'] = 'failed'
             checkpoints[-1]['detail'] = err_msg
-            return {
-                'success': False,
-                'checkpoints': checkpoints,
-                'error': err_msg
-            }
+            return {'success': False, 'checkpoints': checkpoints, 'error': err_msg}
 
         # Checkpoint 6: Delay / Rate Limiting
         delay_sec = float(getattr(settings, 'DELAY_BETWEEN_EMAILS', 3.0))
@@ -458,21 +443,20 @@ class EmailService:
             'step': 6,
             'title': 'Automation Delay Throttling',
             'status': 'running',
-            'detail': f"Applying configured DELAY_BETWEEN_EMAILS ({delay_sec}s)..."
+            'detail': f"Throttling {delay_sec}s between email dispatches..."
         })
 
         if delay_sec > 0:
             time.sleep(delay_sec)
 
         checkpoints[-1]['status'] = 'passed'
-        checkpoints[-1]['detail'] = f"Throttle delay of {delay_sec}s completed. Process finalized."
+        checkpoints[-1]['detail'] = f"Throttle delay of {delay_sec}s completed. Delivery finalized."
 
         return {
             'success': True,
             'checkpoints': checkpoints,
             'normalized_email': normalized_email,
             'subject': final_subject,
-            'body_html': final_html,
-            'resume_path': str(resume_path),
+            'attachment_filename': attachment_filename,
             'error': None
         }

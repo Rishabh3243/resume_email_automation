@@ -6,7 +6,7 @@
 <div class="max-w-xl mx-auto py-6 sm:py-10">
 
     <!-- Card Container -->
-    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
         
         <!-- Header Banner -->
         <div class="p-6 sm:p-8 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white text-center relative">
@@ -14,19 +14,26 @@
                 <i class="fa-solid fa-paper-plane"></i>
             </div>
             <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">JobApp Dispatcher</h1>
-            <p class="text-blue-100 text-sm mt-1.5 font-medium">Session Credentials Setup</p>
+            <p class="text-blue-100 text-xs sm:text-sm mt-1.5 font-medium">Session Credentials Setup &bull; In-Memory Security</p>
         </div>
 
         <div class="p-6 sm:p-8 space-y-6">
 
-
+            <!-- Security Badge Info -->
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
+                <div class="flex items-center text-slate-800 font-semibold gap-1.5">
+                    <i class="fa-solid fa-shield-halved text-emerald-600"></i>
+                    <span>Zero-Disk Credential Policy</span>
+                </div>
+                <p>Your Gmail address and Google App Password are kept solely inside an encrypted browser session cookie. They are never written to disk or the database and are automatically flushed upon browser exit.</p>
+            </div>
 
             <!-- Error Banner -->
             {% if error %}
             <div class="rounded-xl p-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start gap-3 animate-fadeIn">
                 <i class="fa-solid fa-circle-exclamation text-rose-600 text-lg mt-0.5 shrink-0"></i>
                 <div>
-                    <strong class="font-semibold text-rose-950 block">Configuration Notice</strong>
+                    <strong class="font-semibold text-rose-950 block">Setup Error</strong>
                     <p class="text-rose-700 mt-0.5">{{ error }}</p>
                 </div>
             </div>
@@ -48,10 +55,10 @@
                         <input type="email" id="sender_email" name="sender_email" required
                                value="{{ current_email }}"
                                placeholder="e.g. yourname@gmail.com"
-                               class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-sans shadow-sm">
+                               class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-sans shadow-xs">
                     </div>
                     <p class="text-[11px] text-slate-500 mt-1">
-                        The Google account from which candidate applications and resumes will be dispatched.
+                        The Google account from which applications and resumes will be sent.
                     </p>
                 </div>
 
@@ -71,27 +78,25 @@
                         </div>
                         <input type="password" id="gmail_app_password" name="gmail_app_password" required
                                placeholder="16-character App Password (e.g. abcd efgh ijkl mnop)"
-                               class="w-full pl-10 pr-12 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-mono shadow-sm">
+                               class="w-full pl-10 pr-12 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm text-slate-900 placeholder:text-slate-400 font-mono shadow-xs">
                         <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition" title="Show or hide password">
                             <i class="fa-solid fa-eye" id="toggle-icon"></i>
                         </button>
                     </div>
                     <p class="text-[11px] text-slate-500 mt-1">
-                        Generate via Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App passwords. Spaces are stripped automatically.
+                        Generated in Google Account &rarr; Security &rarr; 2-Step Verification &rarr; App Passwords.
                     </p>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-2">
-                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2">
+                    <button type="submit" id="btn-submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 active:scale-[0.99]">
                         <i class="fa-solid fa-rocket"></i>
                         <span>Start Application Session</span>
                     </button>
                 </div>
 
             </form>
-
-
 
         </div>
 
@@ -102,7 +107,7 @@
 
 {% block extra_scripts %}
 <script>
-    // Password toggle
+    // Password visibility toggle
     const toggleBtn = document.getElementById('toggle-password');
     const pwdInput = document.getElementById('gmail_app_password');
     const toggleIcon = document.getElementById('toggle-icon');
